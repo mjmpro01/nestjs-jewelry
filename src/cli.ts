@@ -7,7 +7,7 @@ import { RequestContext } from './shared/request-context/request-context.dto';
 import { CreateUserInput } from './user/dtos/user-create-input.dto';
 import { UserService } from './user/services/user.service';
 
-async function bootstrap() {
+export async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
 
   const configService = app.get(ConfigService);

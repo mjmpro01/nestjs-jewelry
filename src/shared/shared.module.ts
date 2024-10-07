@@ -25,7 +25,7 @@ import { AppLoggerModule } from './logger/logger.module';
         // Timezone configured on the Postgres server.
         // This is used to typecast server date/time values to JavaScript Date object and vice versa.
         timezone: 'Z',
-        synchronize: false,
+        synchronize: true,
         debug: configService.get<string>('env') === 'development',
       }),
     }),

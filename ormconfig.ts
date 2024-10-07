@@ -12,8 +12,8 @@ const typeOrmConfig = new DataSource({
   password: process.env.DB_PASS,
   entities: [__dirname + '/src/**/entities/*.entity{.ts,.js}'],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-  migrationsRun: false,
-  synchronize: false,
+  migrationsRun: true,
+  synchronize: true,
 });
 
 export default typeOrmConfig;
