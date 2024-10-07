@@ -19,8 +19,8 @@ import { ProductAclService } from './services/product-acl.service';
     ProductRepository,
   ],
   controllers: [ProductController],
-  exports: [ProductService],
+  exports: [ProductService, ProductRepository],
 })
 export class ProductModule {}
 
-// This is not a React component, but we're using the React code block for TypeScript 
+// This is not a React component, but we're using the React code block for TypeScript
