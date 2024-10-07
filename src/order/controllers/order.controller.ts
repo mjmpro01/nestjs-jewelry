@@ -6,9 +6,16 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ReqContext } from '../../shared/request-context/req-context.decorator';
 import { RequestContext } from '../../shared/request-context/request-context.dto';
 import { CreateOrderDto } from '../dtos/create-order.dto';
@@ -26,6 +33,8 @@ export class OrderController {
     status: 201,
     description: 'The order has been successfully created.',
   })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   create(
     @Body() createOrderDto: CreateOrderDto,
     @ReqContext() ctx: RequestContext,
