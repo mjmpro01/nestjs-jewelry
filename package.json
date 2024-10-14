@@ -12,6 +12,7 @@
     "Sivan Payyadakath <sivanp77@gmail.com > (https://github.com/sivanpayyadakath)"
   ],
   "scripts": {
+    "migrate:admin": "ts-node src/cli.ts",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

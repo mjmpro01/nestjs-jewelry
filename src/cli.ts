@@ -8,6 +8,7 @@ import { CreateUserInput } from './user/dtos/user-create-input.dto';
 import { UserService } from './user/services/user.service';
 
 export async function bootstrap() {
+  console.log('hello');
   const app = await NestFactory.createApplicationContext(AppModule);
 
   const configService = app.get(ConfigService);
