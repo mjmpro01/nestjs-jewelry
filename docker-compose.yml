@@ -40,9 +40,12 @@ services:
       - postgres_data:/var/lib/postgresql/jewelry/data
     restart: always
   adminer:
-    image: adminer
+    image: dpage/pgadmin4:2024-10-14-1
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@gmail.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-Admin@123}
     ports:
-      - 8080:8080
+      - 5050:80
     depends_on:
       - postgres
 
