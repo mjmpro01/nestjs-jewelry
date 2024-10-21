@@ -15,10 +15,10 @@ import { CreateOrderDto } from '../dtos/create-order.dto';
 import { UpdateOrderDto } from '../dtos/update-order.dto';
 import { Order } from '../entities/order.entity';
 import { OrderItem } from '../entities/order-item.entity';
+import { OrderAclService } from './order-acl.service';
 
 @Injectable()
 export class OrderService {
-  aclService: any;
   constructor(
     @InjectRepository(Order)
     private orderRepository: Repository<Order>,
@@ -26,6 +26,8 @@ export class OrderService {
     private orderItemRepository: Repository<OrderItem>,
     private productService: ProductService,
     private readonly ProductRepository: ProductRepository,
+    private aclService: OrderAclService,
+    
   ) {}
 
   async create(
@@ -33,15 +35,17 @@ export class OrderService {
     ctx: RequestContext,
   ): Promise<Order> {
     const actor: Actor = ctx.user!;
+    console.log(actor);
     const isAllowed = this.aclService
       .forActor(actor)
-      .canDoAction(Action.Create, Order);
+      .canDoAction(Action.Create, Order)
+
     if (!isAllowed) {
       throw new UnauthorizedException();
     }
     const order = this.orderRepository.create(createOrderDto);
     order.orderItems = [];
-
+    order.userId = actor.id;
     let totalAmount = 0;
 
     for (const item of createOrderDto.orderItems) {

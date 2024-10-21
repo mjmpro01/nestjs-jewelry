@@ -51,7 +51,7 @@ export class ProductService {
     const product = plainToClass(Product, input);
     product.slug = slugify(input.name);
     product.category = category;
-
+    product.sku = await this.generateUniqueSKU();
     this.logger.log(ctx, `calling ${ProductRepository.name}.save`);
     const savedProduct = await this.repository.save(product);
 
@@ -209,8 +209,34 @@ export class ProductService {
     this.logger.log(ctx, `calling ${ProductRepository.name}.remove`);
     await this.repository.remove(product);
   }
+
+
+  private async generateUniqueSKU(): Promise<string> {
+    let sku: string = '';
+    let isUnique = false;
+
+    while (!isUnique) {
+      sku = this.generateSKU();
+      const existingProduct = await this.repository.findOne({ where: { sku } });
+      if (!existingProduct) {
+        isUnique = true;
+      }
+    }
+
+    return sku;
+  }
+
+  private generateSKU(): string {
+    const numbers = Math.floor(10000000 + Math.random() * 90000000).toString();
+    const letters = this.generateRandomLetters(2);
+    return `${numbers}_${letters}`;
+  }
+
+  private generateRandomLetters(length: number): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+  }
+
 }
 
-export default function Component() {
-  return null;
-}
+

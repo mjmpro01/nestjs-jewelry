@@ -27,11 +27,6 @@ export class CreateProductInput {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  sku: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   stockQuantity: number;
