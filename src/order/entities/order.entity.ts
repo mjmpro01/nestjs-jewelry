@@ -26,6 +26,9 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ nullable: true })
+  orderCode: string;
+
   @ManyToOne(() => User, (user) => user.orders)
   @JoinColumn({ name: 'userId' })
   user: User;

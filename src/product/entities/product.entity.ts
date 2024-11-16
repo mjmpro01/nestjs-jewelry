@@ -27,8 +27,8 @@ export class Product {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column()
-  sku: string;
+  // @Column()
+  // sku: string;
 
   @Column('int')
   stockQuantity: number;
@@ -45,6 +45,9 @@ export class Product {
 
   @Column('simple-array', { nullable: true })
   gallery: string[];
+
+  @Column('int', { default: 0 })
+  totalPurchases: number;
 
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;

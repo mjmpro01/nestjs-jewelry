@@ -3,8 +3,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { BlogModule } from './blog/blog.module';
 import { CategoryModule } from './category/category.module';
 import { OrderModule } from './order/order.module';
+import { PaymentModule } from './payment/payment.module';
 import { ProductModule } from './product/product.module';
 import { S3UploadModule } from './s3-upload/s3-upload.module';
 import { SharedModule } from './shared/shared.module';
@@ -19,6 +21,8 @@ import { UserModule } from './user/user.module';
     CategoryModule,
     OrderModule,
     S3UploadModule,
+    BlogModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,6 +11,11 @@ export class AuthTokenOutput {
   @Expose()
   @ApiProperty()
   refreshToken: string;
+
+  @Expose()
+  @ApiProperty()
+  roles: ROLE[];
+
 }
 
 export class UserAccessTokenClaims {

@@ -1,11 +1,12 @@
-export function slugify(text: string): string {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
+import slugify from 'slugify'
+export function handleSlug(text: string): string {
+  return slugify(text, {
+    lower: true,
+    locale: "vi",
+    strict: true,
+    replacement: "-",
+    remove: /[*+~.()?=&,$/'"!:@]/g,       // trim leading and trailing replacement chars, defaults to `true`
+  })
 }
 
-// This is not a React component, but we're using the React code block for TypeScript syntax highlighting
+export { slugify }

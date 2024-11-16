@@ -14,10 +14,10 @@ export class GetProductQueryDto extends PaginationParamsDto {
   @IsOptional()
   price?: number;
 
-  @ApiProperty({ required: false })
-  @IsOptional()
-  @IsString()
-  sku?: string;
+  // @ApiProperty({ required: false })
+  // @IsOptional()
+  // @IsString()
+  // sku?: string;
 
   @ApiProperty({ required: false })
   @IsOptional()

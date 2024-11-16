@@ -24,9 +24,9 @@ export class ProductOutput {
   @ApiProperty()
   price: number;
 
-  @Expose()
-  @ApiProperty()
-  sku: string;
+  // @Expose()
+  // @ApiProperty()
+  // sku: string;
 
   @Expose()
   @ApiProperty()
@@ -56,4 +56,9 @@ export class ProductOutput {
   @Expose()
   @ApiProperty()
   gallery: string[];
+
+  @Expose()
+  @ApiProperty()
+  totalPurchases: number;
+
 }

@@ -140,4 +140,14 @@ export class UserService {
       excludeExtraneousValues: true,
     });
   }
+
+  async removeUser(ctx: RequestContext, id: number): Promise<UserOutput> {
+    this.logger.log(ctx, `${this.removeUser.name} was called`);
+
+    this.logger.log(ctx, `calling ${UserRepository.name}.remove`);
+    const user = await this.repository.delete(id);
+    return plainToClass(UserOutput, user, {
+      excludeExtraneousValues: true,
+    });
+  }
 }

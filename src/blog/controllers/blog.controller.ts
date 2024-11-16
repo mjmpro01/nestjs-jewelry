@@ -29,40 +29,40 @@ import { AppLogger } from '../../shared/logger/logger.service';
 import { ReqContext } from '../../shared/request-context/req-context.decorator';
 import { RequestContext } from '../../shared/request-context/request-context.dto';
 import {
-  CreateCategoryInput,
-  UpdateCategoryInput,
-} from '../dtos/category-input.dto';
-import { CategoryOutput } from '../dtos/category-output.dto';
-import { GetCategoriesQueryDto } from '../dtos/category-query.dto';
-import { CategoryService } from '../services/category.service';
+  CreateBlogInput,
+  UpdateBlogInput,
+} from '../dtos/blog-input.dto';
+import { BlogOutput } from '../dtos/blog-output.dto';
+import { GetBlogQueryDto } from '../dtos/blog-query.dto';
+import { BlogService } from '../services/blog.service';
 
-@ApiTags('categories')
-@Controller('categories')
-export class CategoryController {
+@ApiTags('blogs')
+@Controller('blogs')
+export class BlogController {
   constructor(
-    private readonly categoryService: CategoryService,
+    private readonly BlogService: BlogService,
     private readonly logger: AppLogger,
   ) {
-    this.logger.setContext(CategoryController.name);
+    this.logger.setContext(BlogController.name);
   }
 
   @Post()
   @ApiOperation({
-    summary: 'Create category API',
+    summary: 'Create Blog API',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    type: SwaggerBaseApiResponse(CategoryOutput),
+    type: SwaggerBaseApiResponse(BlogOutput),
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async createCategory(
+  async createBlog(
     @ReqContext() ctx: RequestContext,
-    @Body() input: CreateCategoryInput,
-  ): Promise<BaseApiResponse<CategoryOutput>> {
-    const category = await this.categoryService.createCategory(ctx, input);
-    return { data: category, meta: {} };
+    @Body() input: CreateBlogInput,
+  ): Promise<BaseApiResponse<BlogOutput>> {
+    const Blog = await this.BlogService.createBlog(ctx, input);
+    return { data: Blog, meta: {} };
   }
 
   @Get()
@@ -71,96 +71,96 @@ export class CategoryController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: SwaggerBaseApiResponse([CategoryOutput]),
+    type: SwaggerBaseApiResponse([BlogOutput]),
   })
   @UseInterceptors(ClassSerializerInterceptor)
   async getCategories(
     @ReqContext() ctx: RequestContext,
-    @Query() query: GetCategoriesQueryDto,
-  ): Promise<BaseApiResponse<CategoryOutput[]>> {
+    @Query() query: GetBlogQueryDto,
+  ): Promise<BaseApiResponse<BlogOutput[]>> {
     this.logger.log(ctx, `${this.getCategories.name} was called`);
 
-    const { categories, pagination } = await this.categoryService.getCategories(
+    const { blogs, pagination } = await this.BlogService.getBlogs(
       ctx,
       query,
     );
 
-    return { data: categories, meta: { pagination } };
+    return { data: blogs, meta: { pagination } };
   }
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Get category by id API',
+    summary: 'Get Blog by id API',
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: SwaggerBaseApiResponse(CategoryOutput),
+    type: SwaggerBaseApiResponse(BlogOutput),
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     type: BaseApiErrorResponse,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async getCategory(
+  async getBlog(
     @ReqContext() ctx: RequestContext,
     @Param('id') id: number,
-  ): Promise<BaseApiResponse<CategoryOutput>> {
-    this.logger.log(ctx, `${this.getCategory.name} was called`);
+  ): Promise<BaseApiResponse<BlogOutput>> {
+    this.logger.log(ctx, `${this.getBlog.name} was called`);
 
-    const category = await this.categoryService.getCategoryById(ctx, id);
-    return { data: category, meta: {} };
+    const Blog = await this.BlogService.getBlogById(ctx, id);
+    return { data: Blog, meta: {} };
   }
 
   @Get('slug/:slug')
   @ApiOperation({
-    summary: 'Get category by slug API',
+    summary: 'Get Blog by slug API',
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: SwaggerBaseApiResponse(CategoryOutput),
+    type: SwaggerBaseApiResponse(BlogOutput),
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     type: BaseApiErrorResponse,
   })
   @UseInterceptors(ClassSerializerInterceptor)
-  async getCategoryBySlug(
+  async getBlogBySlug(
     @ReqContext() ctx: RequestContext,
     @Param('slug') slug: string,
-  ): Promise<BaseApiResponse<CategoryOutput>> {
-    this.logger.log(ctx, `${this.getCategoryBySlug.name} was called`);
+  ): Promise<BaseApiResponse<BlogOutput>> {
+    this.logger.log(ctx, `${this.getBlogBySlug.name} was called`);
 
-    const category = await this.categoryService.getCategoryBySlug(ctx, slug);
-    return { data: category, meta: {} };
+    const Blog = await this.BlogService.getBlogBySlug(ctx, slug);
+    return { data: Blog, meta: {} };
   }
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Update category API',
+    summary: 'Update Blog API',
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: SwaggerBaseApiResponse(CategoryOutput),
+    type: SwaggerBaseApiResponse(BlogOutput),
   })
   @UseInterceptors(ClassSerializerInterceptor)
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async updateCategory(
+  async updateBlog(
     @ReqContext() ctx: RequestContext,
-    @Param('id') categoryId: number,
-    @Body() input: UpdateCategoryInput,
-  ): Promise<BaseApiResponse<CategoryOutput>> {
-    const category = await this.categoryService.updateCategory(
+    @Param('id') BlogId: number,
+    @Body() input: UpdateBlogInput,
+  ): Promise<BaseApiResponse<BlogOutput>> {
+    const Blog = await this.BlogService.updateBlog(
       ctx,
-      categoryId,
+      BlogId,
       input,
     );
-    return { data: category, meta: {} };
+    return { data: Blog, meta: {} };
   }
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Delete category by id API',
+    summary: 'Delete Blog by id API',
   })
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
@@ -174,7 +174,7 @@ export class CategoryController {
   ): Promise<void> {
     this.logger.log(ctx, `${this.deleteCategory.name} was called`);
 
-    return this.categoryService.deleteCategory(ctx, id);
+    return this.BlogService.deleteBlog(ctx, id);
   }
 
   @Get('slug/:slug')
@@ -183,7 +183,7 @@ export class CategoryController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: SwaggerBaseApiResponse(CategoryOutput),
+    type: SwaggerBaseApiResponse(BlogOutput),
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -193,10 +193,10 @@ export class CategoryController {
   async getProductBySlug(
     @ReqContext() ctx: RequestContext,
     @Param('slug') slug: string,
-  ): Promise<BaseApiResponse<CategoryOutput>> {
+  ): Promise<BaseApiResponse<BlogOutput>> {
     this.logger.log(ctx, `${this.getProductBySlug.name} was called`);
 
-    const category = await this.categoryService.getCategoryBySlug(ctx, slug);
+    const category = await this.BlogService.getBlogBySlug(ctx, slug);
     return { data: category, meta: {} };
   }
 

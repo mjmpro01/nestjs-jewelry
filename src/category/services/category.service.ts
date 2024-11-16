@@ -5,7 +5,7 @@ import { Action } from '../../shared/acl/action.constant';
 import { Actor } from '../../shared/acl/actor.constant';
 import { AppLogger } from '../../shared/logger/logger.service';
 import { RequestContext } from '../../shared/request-context/request-context.dto';
-import { slugify } from '../../shared/utils/slugify';
+import { handleSlug } from '../../shared/utils/slugify';
 import {
   CreateCategoryInput,
   UpdateCategoryInput,
@@ -33,7 +33,7 @@ export class CategoryService {
     this.logger.log(ctx, `${this.createCategory.name} was called`);
 
     const category = plainToClass(Category, input);
-    category.slug = slugify(input.name);
+    category.slug = handleSlug(input.name);
 
     const actor: Actor = ctx.user!;
 
@@ -55,21 +55,33 @@ export class CategoryService {
   async getCategories(
     ctx: RequestContext,
     query: GetCategoriesQueryDto,
-  ): Promise<{ categories: CategoryOutput[]; count: number }> {
-    const [categories, count] = await this.repository.findAndCount({
+  ): Promise<{ categories: CategoryOutput[]; pagination: any }> {
+    const page = query.page || 1;
+    const pageSize = query.pageSize || 10;
+    const skip = (page - 1) * pageSize;
+    const [categories, total] = await this.repository.findAndCount({
       where: {
         ...(query.name && { name: query.name }),
       },
       relations: ['products'],
-      take: query.limit,
-      skip: query.offset,
+      take: pageSize,
+      skip: skip,
     });
 
     const categoriesOutput = plainToClass(CategoryOutput, categories, {
       excludeExtraneousValues: true,
     });
+    const pageCount = Math.ceil(total / pageSize);
 
-    return { categories: categoriesOutput, count };
+    return {
+      categories: categoriesOutput,
+      pagination: {
+        page,
+        pageSize,
+        pageCount,
+        total,
+      },
+    };
   }
 
   async getCategoryById(
@@ -122,7 +134,7 @@ export class CategoryService {
     };
 
     if (input.name) {
-      updatedCategory.slug = slugify(input.name);
+      updatedCategory.slug = handleSlug(input.name);
     }
 
     this.logger.log(ctx, `calling ${CategoryRepository.name}.save`);

@@ -102,6 +102,7 @@ export class AuthService {
         { ...payload, ...subject },
         { expiresIn: this.configService.get('jwt.accessTokenExpiresInSec') },
       ),
+      roles: user.roles,
     };
     return plainToClass(AuthTokenOutput, authToken, {
       excludeExtraneousValues: true,

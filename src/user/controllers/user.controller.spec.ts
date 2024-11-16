@@ -40,8 +40,8 @@ describe('UserController', () => {
   describe('get Users as a list', () => {
     it('Calls getUsers function', () => {
       const query: PaginationParamsDto = {
-        offset: 0,
-        limit: 0,
+        page: 0,
+        pageSize: 0,
       };
       mockedUserService.getUsers.mockResolvedValue({ users: [], count: 0 });
       controller.getUsers(ctx, query);

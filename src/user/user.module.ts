@@ -13,6 +13,6 @@ import { UserAclService } from './services/user-acl.service';
   imports: [SharedModule, TypeOrmModule.forFeature([User])],
   providers: [UserService, JwtAuthStrategy, UserAclService, UserRepository],
   controllers: [UserController],
-  exports: [UserService],
+  exports: [UserService, UserRepository],
 })
 export class UserModule {}
